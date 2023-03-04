@@ -132,10 +132,14 @@ def main():
         gc.collect()
         torch.cuda.empty_cache()
 
-
+# --network_module locon.locon_kohya \
+#   --network_args "conv_dim=RANK_FOR_CONV" "conv_alpha=ALPHA_FOR_CONV" \
+#   --network_dim "RANK_FOR_TRANSFORMER" --network_alpha "ALPHA_FOR_TRANSFORMER"
 def create_arg_space(args: dict) -> [str]:
     # This is the list of args that are to be used regardless of setup
-    output = ["--network_module=networks.lora", f"--pretrained_model_name_or_path={args['base_model']}",
+    output = ["--network_module=networks.lora","--network_module=locon.locon_kohya",
+              f"--network_args=\"{args['net_dim']}\" \"conv_alpha={args['alpha']}\"", 
+              f"--pretrained_model_name_or_path={args['base_model']}",
               f"--train_data_dir={args['img_folder']}", f"--output_dir={args['output_folder']}",
               f"--prior_loss_weight={args['prior_loss_weight']}", f"--caption_extension=" + args['caption_extension'],
               f"--resolution={args['train_resolution']}", f"--train_batch_size={args['batch_size']}",
